@@ -1,0 +1,3 @@
+# HELIOS — 2025-Q3 Earnings Summary (illustrative)
+
+HELIOS reported 2025-Q3 revenue of $9.75B, up 21% year over year, with an operating margin of 20%. Free cash flow margin was 19%. Growth was led by the Platform segment (ads and cloud/AI), while the company continued to invest in the Frontier segment, which posted an operating loss of $-1.55B. Management cited disciplined hiring and infrastructure efficiency as drivers of margin, alongside elevated capital expenditure of 28% of revenue tied to AI capacity.

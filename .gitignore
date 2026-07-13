@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ipynb_checkpoints/
+.DS_Store
+*.log
+# Regenerable artifacts (rebuild with `make warehouse`)
+data/helios.db
+data/gold_monthly.parquet
