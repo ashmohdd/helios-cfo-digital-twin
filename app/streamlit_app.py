@@ -17,6 +17,17 @@ Run:  PYTHONPATH=. python -m streamlit run app/streamlit_app.py
 """
 from __future__ import annotations
 
+# Streamlit Cloud runs this file directly, so the repo root is not on sys.path and
+# `src.*` imports fail. Put it there before any first-party import, and build the
+# gold layer on first boot if the (gitignored) warehouse artifact isn't present.
+import sys, subprocess
+from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+if not (ROOT / "data" / "gold_monthly.parquet").exists():
+    subprocess.run([sys.executable, "-m", "src.warehouse.build_warehouse"],
+                   cwd=ROOT, check=True)
+
 import altair as alt
 import pandas as pd
 import streamlit as st
