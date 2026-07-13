@@ -7,7 +7,7 @@ Two options, both free. Streamlit Community Cloud is the fastest path to a publi
 Prerequisite: the repo is pushed to GitHub (see below).
 
 1. Go to https://share.streamlit.io and sign in with GitHub.
-2. Click **New app** → pick `YOUR_USERNAME/helios-cfo-digital-twin`, branch `main`.
+2. Click **New app** → pick `ashmohdd/helios-cfo-digital-twin`, branch `main`.
 3. Set **Main file path** to `app/streamlit_app.py`.
 4. Under Advanced settings, set the Python version to 3.11.
 5. Click **Deploy**.
@@ -24,7 +24,7 @@ if not (Path(__file__).resolve().parents[1] / "data" / "gold_monthly.parquet").e
     subprocess.run(["python", "-m", "src.warehouse.build_warehouse"], check=True)
 ```
 
-Your app will be live at `https://YOUR_USERNAME-helios-cfo-digital-twin.streamlit.app` (Streamlit shows the exact URL after deploy). Put that URL at the top of the README.
+Your app will be live at `https://ashmohdd-helios-cfo-digital-twin.streamlit.app` (Streamlit shows the exact URL after deploy). Put that URL at the top of the README.
 
 ## Option B — Render (runs the API too)
 
@@ -48,7 +48,7 @@ git add .
 git commit -m "HELIOS CFO Digital Twin: three-statement model, warehouse, ensemble forecasting, API, dashboard, automated reporting"
 git branch -M main
 # create the empty repo on github.com first (no README, no license), then:
-git remote add origin https://github.com/YOUR_USERNAME/helios-cfo-digital-twin.git
+git remote add origin https://github.com/ashmohdd/helios-cfo-digital-twin.git
 git push -u origin main
 ```
 

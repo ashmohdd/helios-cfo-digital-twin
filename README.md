@@ -2,7 +2,7 @@
 
 **A working simulation of a company's financial engine: a fully articulated three-statement model you can forecast, stress-test, and turn into board-ready reports with one command.**
 
-![CI](https://github.com/YOUR_USERNAME/helios-cfo-digital-twin/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/ashmohdd/helios-cfo-digital-twin/actions/workflows/ci.yml/badge.svg)
 ![Python](https://img.shields.io/badge/python-3.11%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Tests](https://img.shields.io/badge/tests-17%20passing-brightgreen)
@@ -42,7 +42,7 @@ flowchart LR
 From clone to running dashboard in under two minutes:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/helios-cfo-digital-twin.git
+git clone https://github.com/ashmohdd/helios-cfo-digital-twin.git
 cd helios-cfo-digital-twin
 make install        # pip install -r requirements.txt
 make warehouse      # generate the company + build the star schema
