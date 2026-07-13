@@ -7,6 +7,8 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Tests](https://img.shields.io/badge/tests-17%20passing-brightgreen)
 
+### 🚀 [Live Demo: HELIOS · CFO Digital Twin · Streamlit](https://helios-cfo-twin.streamlit.app/)
+
 ## What is this?
 
 HELIOS is a digital twin of a fictional technology company's finance function. Instead of a static spreadsheet, the entire business is expressed as a driver-based operating model in code: users, ARPU, headcount, marketing response curves, and infrastructure costs flow into a fully linked P&L, balance sheet, and cash flow statement. Net income rolls into retained earnings, the indirect cash flow reconciles to the balance sheet cash line, and the balance sheet balances by construction, not by a plug (max imbalance across 36 months: $0.00003).

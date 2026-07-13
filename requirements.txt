@@ -9,6 +9,7 @@ psycopg2-binary>=2.9
 fastapi>=0.110
 uvicorn>=0.29
 streamlit>=1.33
+altair>=5.0
 plotly>=5.20
 anthropic>=0.40
 python-dotenv>=1.0

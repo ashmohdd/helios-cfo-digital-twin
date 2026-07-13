@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HELIOS CFO Digital Twin</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0d1117;
+            color: #e6edf3;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 { color: #c9a227; margin-bottom: 30px; font-size: 2em; }
+        h2 { color: #e6edf3; margin: 20px 0 15px 0; font-size: 1.2em; }
+        
+        .controls {
+            display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;
+        }
+        select {
+            padding: 10px 15px;
+            background: #0b1f3a;
+            border: 1px solid #1d2d44;
+            color: #e6edf3;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button {
+            padding: 10px 20px;
+            background: #c9a227;
+            color: #0b1f3a;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover { opacity: 0.9; }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .metric-card {
+            background: #0b1f3a;
+            border: 1px solid #1d2d44;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .metric-label { color: #9bb0c9; font-size: 0.85em; margin-bottom: 5px; }
+        .metric-value { color: #c9a227; font-size: 1.5em; font-weight: bold; }
+        .metric-delta { color: #2a9d8f; font-size: 0.9em; margin-top: 5px; }
+        
+        .chart-container { background: #0b1f3a; border: 1px solid #1d2d44; border-radius: 8px; padding: 15px; margin: 20px 0; position: relative; height: 300px; }
+        
+        .error { color: #c44536; padding: 10px; background: #1a0a0a; border-radius: 6px; margin: 10px 0; }
+        .loading { color: #2a9d8f; text-align: center; padding: 20px; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #1d2d44; }
+        th { background: #0b1f3a; color: #c9a227; }
+        tr:hover { background: #0b1f3a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>◆ HELIOS CFO Digital Twin</h1>
+        <p style="color: #9bb0c9; margin-bottom: 20px;">Real-time financial analytics dashboard</p>
+        
+        <div class="controls">
+            <select id="viewSelect">
+                <option value="cfo">CFO Dashboard</option>
+                <option value="ceo">CEO Dashboard</option>
+                <option value="board">Board Dashboard</option>
+                <option value="investor">Investor Dashboard</option>
+            </select>
+            <select id="scenarioSelect">
+                <option value="Reported actuals">Reported actuals</option>
+                <option value="Base Plan">Base Plan</option>
+            </select>
+            <button onclick="loadDashboard()">Load</button>
+        </div>
+        
+        <div id="dashboard"></div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:8000';
+        
+        async function loadDashboard() {
+            const view = document.getElementById('viewSelect').value;
+            const scenario = document.getElementById('scenarioSelect').value;
+            const dashboard = document.getElementById('dashboard');
+            
+            dashboard.innerHTML = '<div class="loading">Loading...</div>';
+            
+            try {
+                const resp = await fetch(`${API_URL}/kpis?scenario=${encodeURIComponent(scenario)}`);
+                if (!resp.ok) throw new Error(`API error: ${resp.status}`);
+                const data = await resp.json();
+                const latest = data[data.length - 1];
+                
+                let html = `<h2>${view.replace('_', ' ').toUpperCase()}</h2>`;
+                html += `<p style="color: #9bb0c9;">Latest: <strong>${latest.quarter}</strong></p>`;
+                
+                html += '<div class="metrics-grid">';
+                html += `<div class="metric-card">
+                    <div class="metric-label">Revenue</div>
+                    <div class="metric-value">$${(latest.revenue/1e9).toFixed(2)}B</div>
+                </div>`;
+                html += `<div class="metric-card">
+                    <div class="metric-label">Operating Margin</div>
+                    <div class="metric-value">${(latest.operating_margin*100).toFixed(1)}%</div>
+                </div>`;
+                html += `<div class="metric-card">
+                    <div class="metric-label">FCF Margin</div>
+                    <div class="metric-value">${(latest.fcf_margin*100).toFixed(1)}%</div>
+                </div>`;
+                html += `<div class="metric-card">
+                    <div class="metric-label">Rule of 40</div>
+                    <div class="metric-value">${latest.rule_of_40.toFixed(0)}</div>
+                </div>`;
+                html += '</div>';
+                
+                html += '<table>';
+                html += '<tr><th>Quarter</th><th>Revenue</th><th>Op Margin</th><th>FCF</th><th>Rule of 40</th></tr>';
+                data.slice(-8).forEach(row => {
+                    html += `<tr>
+                        <td>${row.quarter}</td>
+                        <td>$${(row.revenue/1e9).toFixed(2)}B</td>
+                        <td>${(row.operating_margin*100).toFixed(1)}%</td>
+                        <td>$${(row.fcf/1e9).toFixed(2)}B</td>
+                        <td>${row.rule_of_40.toFixed(0)}</td>
+                    </tr>`;
+                });
+                html += '</table>';
+                
+                dashboard.innerHTML = html;
+            } catch (err) {
+                dashboard.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+            }
+        }
+        
+        // Load on startup
+        loadDashboard();
+    </script>
+</body>
+</html>

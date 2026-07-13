@@ -12,9 +12,9 @@ heads want their cost line; Investors want the metrics that move a multiple.
 
 Every figure on screen is computed by the analytics engine (kpis / variance /
 compare / forecasting) — the UI never does finance math itself.
-
 Run:  PYTHONPATH=. python -m streamlit run app/streamlit_app.py
 """
+
 from __future__ import annotations
 
 # Streamlit Cloud runs this file directly, so the repo root is not on sys.path and

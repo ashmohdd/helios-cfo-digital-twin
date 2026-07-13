@@ -24,10 +24,13 @@ from __future__ import annotations
 
 from functools import lru_cache
 from typing import Any
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from src.analytics.kpis import quarterly, compute_kpis, KPI_BY_AUDIENCE
@@ -49,6 +52,20 @@ app = FastAPI(
     version="1.0.0",
     description="Decision-intelligence API for an enterprise FP&A operating system.",
 )
+
+# Enable CORS for frontend access
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Mount static files (dashboard UI)
+static_dir = Path(__file__).parent.parent / "static"
+if static_dir.exists():
+    app.mount("/ui", StaticFiles(directory=str(static_dir), html=True), name="ui")
 
 
 @lru_cache(maxsize=1)
